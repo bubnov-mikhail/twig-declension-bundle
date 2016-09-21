@@ -1,0 +1,4 @@
+bubnov-twig-declension-bundle-routs:
+    resource: "@BubnovTwigDeclensionBundle/Controller/"
+    type:     annotation
+    prefix:   /

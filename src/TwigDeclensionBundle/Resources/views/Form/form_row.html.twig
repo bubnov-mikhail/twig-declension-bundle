@@ -1,0 +1,89 @@
+{% block form_widget_compound %}
+    <div {{ block('widget_container_attributes') }}>
+        {% if form_errors(form) is not empty %}
+            <div class="alert alert-danger">
+                {{ form_errors(form) }}
+            </div>
+        {% endif %}
+    {{ block('form_rows') }}
+    {{ form_rest(form) }}
+    </div>
+{% endblock form_widget_compound %}
+
+
+{% block form_row %}
+<div class="form-group" {% for attr, value in form.vars.attr %}{% if attr != 'class' %}{{ attr }}="{{value}}" {%endif%}{% endfor %}>
+    {{ form_label(form) }}
+    {% if form_errors(form) is not empty %}
+        <div class="alert alert-danger">
+            {{ form_errors(form) }}
+        </div>
+    {% endif %}
+
+    {% if form.vars.block_prefixes.1 == 'collection' %}
+        <table class="table table-striped collection-holder" {% if form.vars.allow_add %}data-prototype="{% filter escape %}<tr>{% for field_proto in form.vars.prototype %}{% set formType = field_proto.vars.block_prefixes.1 %}<td {% if field_proto.vars.name == 'allowDelete' or formType == 'hidden' %}class="hidden"{% endif %}>{% if form.vars.attr['show_placeholder'] is defined and form.vars.attr['show_placeholder'] %}<span class="value-placeholder"></span>{% endif %}{{ form_row(field_proto) }}</td>{% endfor %}<td width='5'>{% if form.vars.allow_delete %}<a href='' class='collection-delete' target='#{{ form.vars.id }}'><i class='icon-trash'></i></a>{% endif %}</td></tr>{% endfilter %}"{% endif %} id="{{ form.vars.id }}">
+            <tbody>
+            {% for element in form %}
+                <tr>
+                    {% for field in element %}
+                        {% set formType = field.vars.block_prefixes.1 %}
+                        <td {% if field.vars.name == 'allowDelete' or formType == 'hidden' %}class="hidden"{% endif %}>
+                            {% if form.vars.attr['show_placeholder'] is defined and form.vars.attr['show_placeholder'] %}
+                                <span class="value-placeholder">{{ field.vars.value }}</span>
+                            {% endif %}
+                            {{ form_row(field, {'attr': {'class': 'form-control'} }) }}
+                        </td>
+                    {% endfor %}
+                    <td width="5">
+                    {% if is_granted('ROLE_ADMIN') %}
+                        {% if form.vars.allow_delete and (element.vars.value.allowDelete is not defined or element.vars.value.allowDelete == 1)%}
+                            <a href="" class="collection-delete" target="#{{ form.vars.id }}">
+                                <i class="icon-trash"></i>
+                            </a>
+                        {% endif %}
+                    {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% if is_granted('ROLE_ADMIN') %}
+            {% if form.vars.allow_add and ( form.vars.attr['disallow_add'] is not defined or form.vars.attr['disallow_add'] == false) %}
+                <input type="button" id="{{ form.vars.full_name }}_add" name="{{ form.vars.full_name }}_add" value="{{ 'twig-declension.add'| trans }}" class="btn btn-primary collection-add" target="#{{ form.vars.id }}"/>
+            {% endif %}
+
+            {% if form.vars.attr['allow_add_many'] is defined and form.vars.attr['allow_add_many'] %}
+                <input type="button" id="{{ form.vars.full_name }}_add_many" name="{{ form.vars.full_name }}_add_many" value="{% if form.vars.attr['add_many_name'] is defined %}{{ form.vars.attr['add_many_name'] | trans }}{% else %}{{ 'twig-declension.add_many'| trans }}{% endif %}" class="btn btn-primary collection-add-many tooltip-able" target="#{{ form.vars.id }}" title="{{ 'twig-declension.add_many_tip' | trans }}" role="button" data-toggle="modal" data-backdrop="static" data-target="#addManyModal"/>
+            {% endif %}
+
+            {% if form.vars.attr['allow_update_list'] is defined and form.vars.attr['allow_update_list'] %}
+                <input type="button" id="{{ form.vars.full_name }}_update_list" name="{{ form.vars.full_name }}_update_listy" value="{% if form.vars.attr['update_list_name'] is defined %}{{ form.vars.attr['update_list_name'] | trans }}{% else %}{{ 'twig-declension.update_list'| trans }}{% endif %}" class="btn btn-primary collection-update-list tooltip-able" target="#{{ form.vars.id }}" title="{{ 'twig-declension.update_list_tip' | trans }}" role="button" data-toggle="modal" data-backdrop="static" data-target="#updateListModal"/>
+            {% endif %}
+
+            {% if form.vars.attr['allow_clear_list'] is defined and form.vars.attr['allow_clear_list'] %}
+                <input type="button" id="{{ form.vars.full_name }}_clear_list" name="{{ form.vars.full_name }}_clear_list" value="{% if form.vars.attr['clear_list_name'] is defined %}{{ form.vars.attr['clear_list_name'] | trans }}{% else %}{{ 'twig-declension.clear_list'| trans }}{% endif %}" class="btn btn-primary collection-clear-list tooltip-able" target="#{{ form.vars.id }}" title="{{ 'twig-declension.clear_list_tip' | trans }}"/>
+            {% endif %}
+
+        {% endif %}
+    {% else %}
+        {% set attrs = form.vars.attr %}
+        {% if attrs['class'] is defined %}
+            {% set attrs = attrs | merge({'class': attrs['class'] ~ ' form-control' }) %}
+        {% else %}
+            {% set attrs = attrs | merge({'class': 'form-control' }) %}
+        {% endif %}
+
+        {% if form.vars.multiple is defined and form.vars.expanded is defined and form.vars.multiple and form.vars.expanded %}
+            <div class="form-control">
+            {% for element in form %}
+                <div class="form-control-element">
+                {{ form_widget(element, {'attr': attrs }) }} {{ form_label(element) }}
+                </div>
+            {% endfor %}
+            </div>
+        {% else %}
+            {{ form_widget(form, {'attr': attrs }) }}
+        {% endif %}
+    {% endif %}
+</div>
+{% endblock form_row %}

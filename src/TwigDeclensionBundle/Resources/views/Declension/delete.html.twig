@@ -1,0 +1,20 @@
+{% extends '::base.html.twig' %}
+{% form_theme form 'BubnovTwigDeclensionBundle:Form:form_row.html.twig' %}
+
+{% block title %}{{ 'twig-declension.delete' | trans }}{% endblock %}
+
+{% block body -%}
+    <h1 class="alert alert-danger">{{ 'twig-declension.delete' | trans }} "{{ entity }}"</h1>
+
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        
+        <div class="pull-right">
+            <input type="submit" id="_submit" name="_submit" value="{{ 'twig-declension.delete'| trans }}" class="btn btn-danger" />
+            <a href="{{ path('admin_twig_declension') }}" id="cancel" class="btn btn-default">
+                {{ 'twig-declension.cancel'| trans }}
+            </a>
+        </div>
+    {{ form_end(form) }}
+</ul>
+{% endblock %}

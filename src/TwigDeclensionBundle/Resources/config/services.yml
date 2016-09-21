@@ -1,0 +1,6 @@
+services:
+    twig.declension:
+        class: Bubnov\TwigDeclensionBundle\Twig\Extension\TwigDeclensionExtension
+        arguments: [@doctrine.orm.entity_manager, %locale%, %twig.declension.load_all%, %twig.declension.auto-define%]
+        tags:
+            - { name: twig.extension }

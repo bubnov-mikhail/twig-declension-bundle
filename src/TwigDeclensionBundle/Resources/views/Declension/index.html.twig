@@ -1,0 +1,65 @@
+{% extends '::base.html.twig' %}
+{% form_theme form 'BubnovTwigDeclensionBundle:Form:form_row.html.twig' %}
+
+{% block title %}{{ 'twig-declension.index' | trans }}{% endblock %}
+
+{% block body %}
+    <h1>{{ 'twig-declension.index' | trans }}</h1>
+    
+    <div class="pull-right">
+        <a class="btn btn-success" id="admin_seometa_new" href="{{ path('admin_twig_declension_new') }}">
+            <span class="icon-plus icon-white"></span> {{ 'twig-declension.add' | trans}}
+        </a>
+    </div>
+    <br> 
+    
+    {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button type="submit" class="btn btn-primary">{{ 'twig-declension.search' | trans }}</button>
+        <a class="btn btn-default" href="{{ path('admin_twig_declension') }}">
+            {{ 'twig-declension.find_all' | trans}}
+        </a>
+    {{ form_end(form) }}
+    <separator></separator>
+
+    {% if entities is empty %}
+        {{ 'twig-declension.errors.not_found' | trans }}
+    {% else %}
+    {{ knp_pagination_render(pagination) }}
+    <table class="records_list table table-striped">
+        <thead>
+            <tr>
+                <th>{{ 'twig-declension.forms.inf' | trans }}</th>
+                <th>{{ 'twig-declension.needs_work' | trans }}</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for entity in entities %}
+            <tr>
+                <td>
+                    <a href="{{ path('admin_twig_declension_edit', { 'id': entity.id }) }}">{{ entity }}</a>
+                </td>
+                <td>
+                    {% if entity.needWork %}
+                        {{ 'twig-declension.yes' | trans }}
+                    {% else %}
+                        {{ 'twig-declension.no' | trans }}
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="{{ path('admin_twig_declension_edit', { 'id': entity.id }) }}" title="{{ 'twig-declension.edit' | trans}}">
+                        <i class="icon-pencil"></i>
+                    </a>
+                    <a href="{{ path('admin_twig_declension_delete', { 'id': entity.id }) }}" title="{{ 'twig-declension.delete' | trans}}">
+                        <i class="icon-trash"></i>
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {{ knp_pagination_render(pagination) }}
+    {% endif %}
+
+{% endblock %}

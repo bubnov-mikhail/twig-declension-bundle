@@ -1,0 +1,3 @@
+parameters:
+    twig.declension.load_all: true
+    twig.declension.auto-define: true

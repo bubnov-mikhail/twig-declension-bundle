@@ -1,0 +1,31 @@
+{
+    "name": "bubnovKelnik/twig-declension-bundle",
+    "description": "Symfony3 bundle for declension",
+    "keywords":["symfony", "symfony bundle", "bundle", "twig", "filter", "declension"],
+    "type":"library",
+    "license": "MIT",
+    "require": {
+        "cijic/phpmorphy": "dev-master",
+        "friendsofsymfony/jsrouting-bundle": "~2.0",
+        "jms/security-extra-bundle": "~1.6",
+        "knplabs/knp-paginator-bundle": "2.5.3",
+        "symfony/symfony": "~3.0",
+        "sensio/framework-extra-bundle": "^3.0.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "Bubnov\\TwigDeclensionBundle\\": "src/TwigDeclensionBundle"
+        }
+    },
+    "authors": [
+        {
+            "name": "Mihail Bubnov",
+            "email": "bubnov.mihail@gmail.com"
+        }
+    ],
+    "extra": {
+        "branch-alias": {
+            "dev-master": "3.0.0"
+        }
+    }
+}
