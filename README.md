@@ -56,7 +56,7 @@
     ```yml
     # app/routing.yml
     bubnov-twig-declension-bundle:
-        resource: "@BubnovDeclensionBundle/Resources/config/routing/routing.yml"
+        resource: "@BubnovTwigDeclensionBundle/Resources/config/routing/routing.yml"
     ```
 
     Тонкая настройка
@@ -75,7 +75,7 @@
     <a href="{{ path('admin_twig_declension') }}">Слонения</a>
     ```
 
-    ** Внимание! В контроллере используется контроль доступа. Пользователь должен обладать ролью ROLE_ADMIN**
+    ** Внимание! В контроллере используется контроль доступа. Пользователь должен обладать ролью ROLE_ADMIN непосредственно, либо по иерархии ролей (см. security.role_hierarchy)
 
     Создать необходимые записи в административном интерфейсе
     В данном примере мы создали запись "яблоко" и заполнили все падежи и множественные формы
@@ -132,10 +132,10 @@
     }
     ```
 
-    Подключите в html js-ассет 'bundles/fosjsrouting/js/router.js' и 'bundles/bubnovkelniktwigdeclension/js/auto-declension.js'
+    Подключите в html js-ассет 'bundles/fosjsrouting/js/router.js' и 'bundles/bubnovtwigdeclension/js/auto-declension.js'
     ```html
     <script type="text/javascript" src="{{ asset('bundles/fosjsrouting/js/router.js') }}></script>
-    <script type="text/javascript" src="{{ asset('bundles/bubnovkelniktwigdeclension/js/auto-declension.js') }}></script>
+    <script type="text/javascript" src="{{ asset('bundles/bubnovtwigdeclension/js/auto-declension.js') }}></script>
     ```
 
     или
@@ -144,7 +144,7 @@
     {% javascripts
         ...
         'bundles/fosjsrouting/js/router.js'
-        'bundles/bubnovkelniktwigdeclension/js/auto-declension.js'
+        'bundles/bubnovtwigdeclension/js/auto-declension.js'
         ...
         output='compiled/compiled.js'
     %}
