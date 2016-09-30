@@ -11,20 +11,10 @@
 
 1) Установка
 ----------------------------------
-    Добавить в composer.json
-    ```json
-    # composer.json
-    "repositories": [
-        {
-            "type": "vcs",
-            "url":  "git@github.com:bubnovKelnik/twig-declension-bundle.git"
-        }
-    ]
-    ```
 
     Выполнить:
     ```sh
-    composer require bubnovKelnik/twig-declension-bundle:~3.0
+    composer require bubnov/twig-declension-bundle: ~3.0
     ```
 
     Добавить бандл в конфигурацию AppKernel

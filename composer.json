@@ -1,5 +1,5 @@
 {
-    "name": "bubnovKelnik/twig-declension-bundle",
+    "name": "bubnov/twig-declension-bundle",
     "description": "Symfony3 bundle for declension",
     "keywords":["symfony", "symfony bundle", "bundle", "twig", "filter", "declension"],
     "type":"library",
@@ -25,7 +25,7 @@
     ],
     "extra": {
         "branch-alias": {
-            "dev-master": "3.0.0"
+            "dev-master": "~3.0"
         }
     }
 }
