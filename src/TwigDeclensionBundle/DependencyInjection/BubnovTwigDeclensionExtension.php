@@ -17,7 +17,7 @@ class BubnovTwigDeclensionExtension extends Extension
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $container->setParameter('twig.declension.load_all', $config['load_all']);
-        $container->setParameter('twig.declension.auto-define', $config['auto-define']);
+        $container->setParameter('bubnov_twig_declension.pre_cache', $config['pre_cache']);
+        $container->setParameter('bubnov_twig_declension.auto_create', $config['auto_create']);
     }
 }

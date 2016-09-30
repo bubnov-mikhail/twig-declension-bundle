@@ -13,15 +13,13 @@ class Configuration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('bubnov.twig.declension');
+        $rootNode = $treeBuilder->root('bubnov_twig_declension');
 
         $rootNode
+            ->addDefaultsIfNotSet()
             ->children()
-                ->addDefaultsIfNotSet()
-                ->children()
-                    ->scalarNode('load_all')->defaultValue(true)->end()
-                    ->scalarNode('auto-define')->defaultValue(true)->end()
-                ->end()
+                ->scalarNode('pre_cache')->defaultValue(true)->end()
+                ->scalarNode('auto_create')->defaultValue(true)->end()
             ->end()
         ;
 

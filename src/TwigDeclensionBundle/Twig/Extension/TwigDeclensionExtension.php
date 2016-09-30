@@ -23,14 +23,24 @@ class TwigDeclensionExtension extends \Twig_Extension
      * Cached Declension
      * @var Array 
      */
-    private $cached;
+    private $cached = [];
+
+    /**
+     * Do precache for all declentions on first request
+     * @var Boolean
+     */
+    private $doPreCache = true;
     
     /**
      * Do create Declension if not exist yet
      * @var Boolean 
      */
-    private $autoCreate;
+    private $autoCreate = true;
 
+    /**
+     *
+     * @var Array
+     */
     private static $morphyGrammems = [
         Declension::INFINITIVE => ['ИМ', 'ЕД'],
         Declension::GENITIVE => ['РД', 'ЕД'],
@@ -46,15 +56,13 @@ class TwigDeclensionExtension extends \Twig_Extension
      *
      * @param EntityManager $em
      */
-    public function __construct(EntityManager $em, $locale = 'ru', $preChached = false, $autoCreate = false)
+    public function __construct(EntityManager $em, $locale = 'ru', $doPreCache = true, $autoCreate = true)
     {
         $this->cached = [];
         $this->em = $em;
         $this->locale = $locale;
         $this->autoCreate = $autoCreate;
-        if($preChached){
-            $this->preCache();
-        }
+        $this->doPreCache = $doPreCache;
     }
 
     /**
@@ -65,6 +73,15 @@ class TwigDeclensionExtension extends \Twig_Extension
         return [
             new \Twig_SimpleFilter('declension', [$this, 'onDeclension']),
         ];
+    }
+
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getName()
+    {
+        return 'declension_extension';
     }
     
     /**
@@ -119,6 +136,11 @@ class TwigDeclensionExtension extends \Twig_Extension
             return null;
         }
     }
+
+    public function __toString()
+    {
+        return $this->getName();
+    }
     
     /**
      * Gets all Declensions from DB for precache
@@ -138,18 +160,10 @@ class TwigDeclensionExtension extends \Twig_Extension
      * @return string
      */
     private function fixCase($infinitive = '', $form = '') {
-        return ucfirst(strtolower($infinitive)) == $infinitive 
+        return (ucfirst(strtolower($infinitive)) == $infinitive)
             ? self::my_mb_ucfirst($form)
             : $form
         ;
-    }
-    
-    /**
-     * {@inheritdoc}
-     */
-    public function getName()
-    {
-        return 'declension_extension';
     }
     
     /**
@@ -160,7 +174,7 @@ class TwigDeclensionExtension extends \Twig_Extension
     static private function my_mb_ucfirst($str, $encode = 'UTF-8') {
         $fc = mb_strtoupper(mb_substr($str, 0, 1, $encode), $encode);
         
-        return $fc.mb_substr($str, 1 , mb_strlen($str), $encode);
+        return $fc . mb_substr($str, 1 , mb_strlen($str), $encode);
     }
 
     /**
@@ -223,6 +237,11 @@ class TwigDeclensionExtension extends \Twig_Extension
             return $this->cached[md5($infinitive)];
         }
 
+        if($this->doPreCache){
+            $this->preCache();
+            $this->doPreCache = false;
+        }
+        
         return null;
     }
     

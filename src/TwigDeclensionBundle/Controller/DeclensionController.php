@@ -44,7 +44,7 @@ class DeclensionController extends Controller
                 $em->flush();
                 $this->get('session')->getFlashBag()->add('success', 'twig-declension.added');
 
-                return $this->redirect($this->generateUrl('admin_twig_declension'));
+                return $this->redirectToRoute('admin_twig_declension');
                 
             } catch (DBALException $e) {
                 $error = new FormError($this->get('translator')->trans('twig-declension.errors.already_exist'));
@@ -165,7 +165,7 @@ class DeclensionController extends Controller
                 $em->flush();
                 $this->get('session')->getFlashBag()->add('success', 'twig-declension.edited');
 
-                return $this->redirect($this->generateUrl('admin_twig_declension'));
+                return $this->redirectToRoute('admin_twig_declension');
             } catch (DBALException $e) {
                 $error = new FormError($this->get('translator')->trans('twig-declension.already_exist'));
                 $form->get('infinitive')->addError($error);
@@ -204,7 +204,7 @@ class DeclensionController extends Controller
                 $em->flush();
                 $this->get('session')->getFlashBag()->add('success', 'twig-declension.deleted');
 
-                return $this->redirect($this->generateUrl('admin_twig_declension'));
+                return $this->redirectToRoute('admin_twig_declension');
             } catch (\Exception $e) {
                 $error = new FormError($this->get('translator')->trans('twig-declension.errors.unknown_error'));
                 $form->get('infinitive')->addError($error);

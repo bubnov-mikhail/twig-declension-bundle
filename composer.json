@@ -5,10 +5,10 @@
     "type":"library",
     "license": "MIT",
     "require": {
-        "cijic/phpmorphy": "dev-master",
+        "cijic/phpmorphy": "~0.3",
         "friendsofsymfony/jsrouting-bundle": "~2.0",
         "jms/security-extra-bundle": "~1.6",
-        "knplabs/knp-paginator-bundle": "2.5.3",
+        "knplabs/knp-paginator-bundle": "2.*",
         "symfony/symfony": "~3.0",
         "sensio/framework-extra-bundle": "^3.0.2"
     },

@@ -7,7 +7,10 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Declension
  *
- * @ORM\Table(name="declension")
+ * @ORM\Table(name="declension",
+ * indexes={
+ *  @ORM\Index(name="index_infinitive", columns={"infinitive"})
+ * })
  * @ORM\Entity(repositoryClass="Bubnov\TwigDeclensionBundle\Entity\Repository\DeclensionRepository")
  */
 class Declension
