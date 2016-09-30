@@ -16,53 +16,53 @@ use Doctrine\ORM\Mapping as ORM;
 class Declension
 {
     /**
-     * @var String
+     * @var string
      */
     const INFINITIVE = 'inf';
     
     /**
-     * @var String
+     * @var string
      */
     const MULTI = 'inf_multi';
     
     /**
-     * @var String
+     * @var string
      */
     const GENITIVE = 'gen';
     
     /**
-     * @var String
+     * @var string
      */
     const GENITIVE_PLURAL = 'gen_multi';
     
     /**
-     * @var String
+     * @var string
      */
     const DATIVE = 'dat';
     
     /**
-     * @var String
+     * @var string
      */
     const ACCUSATIVE = 'acc';
     
     /**
-     * @var String
+     * @var string
      */
     const ABLATIVE = 'abl';
     
     /**
-     * @var String
+     * @var string
      */
     const PREPOSITIONAL = 'pre';
     
     /**
-     * @var String
+     * @var string
      */
     const PLURAL = 'plural';
     
     /**
      * Avalible forms
-     * @var Array
+     * @var array
      */
     static public $forms = [
         self::INFINITIVE => 'infinitive',
@@ -143,32 +143,35 @@ class Declension
     private $multi;
 
     /**
-     * 
-     * @return String
+     *
+     * @return string
      */
-    public function __toString() {
+    public function __toString()
+    {
         return $this->getInfinitive();
     }
     
     /**
-     * 
-     * @param String $form
-     * @return Boolean
+     *
+     * @param string $form
+     * @return boolean
      */
-    public function hasForm($form = self::INFINITIVE) {
+    public function hasForm($form = self::INFINITIVE)
+    {
         return isset(self::$forms[$form]);
     }
     
     /**
-     * 
-     * @param String $form
-     * @return String
+     *
+     * @param string $form
+     * @return string
      */
-    public function getForm($form = self::INFINITIVE, $count = null) {
-        if($this->hasForm($form)){
+    public function getForm($form = self::INFINITIVE, $count = null)
+    {
+        if ($this->hasForm($form)) {
             $method = 'get' . ucfirst(self::$forms[$form]);
-        
-            if($declensioned = $this->$method($count)){
+
+            if ($declensioned = $this->$method($count)) {
                 return $declensioned;
             }
         }
@@ -179,7 +182,7 @@ class Declension
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -202,7 +205,7 @@ class Declension
     /**
      * Get infinitive
      *
-     * @return string 
+     * @return string
      */
     public function getInfinitive()
     {
@@ -225,7 +228,7 @@ class Declension
     /**
      * Get genitive
      *
-     * @return string 
+     * @return string
      */
     public function getGenitive()
     {
@@ -248,7 +251,7 @@ class Declension
     /**
      * Get dative
      *
-     * @return string 
+     * @return string
      */
     public function getDative()
     {
@@ -271,7 +274,7 @@ class Declension
     /**
      * Get accusative
      *
-     * @return string 
+     * @return string
      */
     public function getAccusative()
     {
@@ -294,7 +297,7 @@ class Declension
     /**
      * Get ablative
      *
-     * @return string 
+     * @return string
      */
     public function getAblative()
     {
@@ -317,7 +320,7 @@ class Declension
     /**
      * Get prepositional
      *
-     * @return string 
+     * @return string
      */
     public function getPrepositional()
     {
@@ -340,7 +343,7 @@ class Declension
     /**
      * Get multi
      *
-     * @return string 
+     * @return string
      */
     public function getMulti()
     {
@@ -349,12 +352,12 @@ class Declension
     
     /**
      * Get plural
-     * @param Integer $n
-     * @return string 
+     * @param integer $n
+     * @return string
      */
     public function getPlural($n = null)
     {
-        if(is_null($n) || !is_integer($n)){
+        if (is_null($n) || !is_integer($n) || 1 === $n) {
             return $this->getInfinitive();
         }
         
@@ -387,7 +390,7 @@ class Declension
     /**
      * Get genitive_plural
      *
-     * @return string 
+     * @return string
      */
     public function getGenitivePlural()
     {
@@ -395,11 +398,12 @@ class Declension
     }
     
     /**
-     * @return Boolean
+     * @return boolean
      */
-    public function isNeedWork(){
-        foreach(self::$forms as $form){
-            if(empty($this->$form) && $form !== 'plural'){
+    public function isNeedWork()
+    {
+        foreach (self::$forms as $form) {
+            if (empty($this->$form) && $form !== 'plural') {
                 return true;
             }
         }

@@ -21,7 +21,7 @@ class TwigDeclensionExtension extends \Twig_Extension
     
     /**
      * Cached Declension
-     * @var Array 
+     * @var Array
      */
     private $cached = [];
 
@@ -33,7 +33,7 @@ class TwigDeclensionExtension extends \Twig_Extension
     
     /**
      * Do create Declension if not exist yet
-     * @var Boolean 
+     * @var Boolean
      */
     private $autoCreate = true;
 
@@ -85,17 +85,18 @@ class TwigDeclensionExtension extends \Twig_Extension
     }
     
     /**
-     * 
+     *
      * @param string $infinitive
      * @return string
      */
-    public function onDeclension($infinitive = '', $form = Declension::INFINITIVE, $count = null) {
+    public function onDeclension($infinitive = '', $form = Declension::INFINITIVE, $count = null)
+    {
         $infinitive = (string) $infinitive;
-        if(empty($infinitive)){
+        if (empty($infinitive)) {
             return $infinitive;
         }
         
-        if($declension = $this->getDeclension($infinitive)){
+        if ($declension = $this->getDeclension($infinitive)) {
             $form = $declension->getForm($form, $count);
             
             return $this->fixCase($infinitive, $form);
@@ -109,20 +110,21 @@ class TwigDeclensionExtension extends \Twig_Extension
      * @param String $infinitive
      * @return Array
      */
-    public function getDeclensions($infinitive = '') {
-        if(empty($infinitive)){
+    public function getDeclensions($infinitive = '')
+    {
+        if (empty($infinitive)) {
             return null;
         }
         
         try {
             $morphy = new Morphy($this->locale);
             $paradigms = $morphy->findWord(mb_strtoupper($infinitive, 'UTF-8'));
-            if(false === $paradigms || !isset($paradigms[0])){
+            if (false === $paradigms || !isset($paradigms[0])) {
                 return null;
             }
-            $paradigm = $paradigms[0];            
+            $paradigm = $paradigms[0];
             $result = [];
-            foreach(self::$morphyGrammems as $declention => $grammems){
+            foreach (self::$morphyGrammems as $declention => $grammems) {
                 $wordsInForm = $paradigm->getWordFormsByGrammems($grammems);
                 $res = (is_array($wordsInForm) && isset($wordsInForm[0]) && is_object($wordsInForm[0]))
                     ? mb_strtolower($wordsInForm[0]->getWord(), 'UTF-8')
@@ -132,7 +134,7 @@ class TwigDeclensionExtension extends \Twig_Extension
             }
             
             return $result;
-        } catch (\Exception $e){
+        } catch (\Exception $e) {
             return null;
         }
     }
@@ -145,9 +147,10 @@ class TwigDeclensionExtension extends \Twig_Extension
     /**
      * Gets all Declensions from DB for precache
      */
-    private function preCache(){
-        if($declensions = $this->em->getRepository(Declension::class)->findAll()){
-            foreach($declensions as $declension){
+    private function preCache()
+    {
+        if ($declensions = $this->em->getRepository(Declension::class)->findAll()) {
+            foreach ($declensions as $declension) {
                 $this->setCached($declension);
             }
         }
@@ -159,49 +162,51 @@ class TwigDeclensionExtension extends \Twig_Extension
      * @param string $form
      * @return string
      */
-    private function fixCase($infinitive = '', $form = '') {
+    private function fixCase($infinitive = '', $form = '')
+    {
         return (ucfirst(strtolower($infinitive)) == $infinitive)
-            ? self::my_mb_ucfirst($form)
+            ? self::ucFirst($form)
             : $form
         ;
     }
     
     /**
-     * 
+     *
      * @param String $str
      * @return String
      */
-    static private function my_mb_ucfirst($str, $encode = 'UTF-8') {
+    private static function ucFirst($str, $encode = 'UTF-8')
+    {
         $fc = mb_strtoupper(mb_substr($str, 0, 1, $encode), $encode);
         
-        return $fc . mb_substr($str, 1 , mb_strlen($str), $encode);
+        return $fc . mb_substr($str, 1, mb_strlen($str), $encode);
     }
 
     /**
-     * 
+     *
      * @param String $infinitive
      * @return Declension | null
      */
     private function getDeclension($infinitive = '')
     {
-        if($declension = $this->getCached($infinitive)){
+        if ($declension = $this->getCached($infinitive)) {
             return $declension;
         }
-        if($declension === false){
+        if ($declension === false) {
             return null;
         }
 
         $repository = $this->em->getRepository(Declension::class);
-        if($declension = $repository->findOneByInfinitive($infinitive)){
+        if ($declension = $repository->findOneByInfinitive($infinitive)) {
             $this->setCached($declension);
 
             return $declension;
         }
         
-        if($this->autoCreate){
+        if ($this->autoCreate) {
             $declension = new Declension();
             $declension->setInfinitive($infinitive);
-            if($declensions = $this->getDeclensions($infinitive)){
+            if ($declensions = $this->getDeclensions($infinitive)) {
                 $declension
                     ->setGenitive($declensions[Declension::GENITIVE])
                     ->setGenitivePlural($declensions[Declension::GENITIVE_PLURAL])
@@ -210,7 +215,7 @@ class TwigDeclensionExtension extends \Twig_Extension
                     ->setAblative($declensions[Declension::ABLATIVE])
                     ->setPrepositional($declensions[Declension::PREPOSITIONAL])
                     ->setMulti($declensions[Declension::MULTI])
-                ;       
+                ;
             }
             $this->em->persist($declension);
             $this->em->flush();
@@ -226,18 +231,18 @@ class TwigDeclensionExtension extends \Twig_Extension
     }
     
     /**
-     * 
+     *
      * @param String $infinitive
      * @return Declension | null
      */
-    private function getCached($infinitive = '') {
+    private function getCached($infinitive = '')
+    {
         $infinitive = mb_strtolower($infinitive, 'UTF-8');
-        if(isset($this->cached[md5($infinitive)])){
-
+        if (isset($this->cached[md5($infinitive)])) {
             return $this->cached[md5($infinitive)];
         }
 
-        if($this->doPreCache){
+        if ($this->doPreCache) {
             $this->preCache();
             $this->doPreCache = false;
         }
@@ -246,22 +251,24 @@ class TwigDeclensionExtension extends \Twig_Extension
     }
     
     /**
-     * 
+     *
      * @param Declension $declension
      * @return \Bubnov\TwigDeclensionBundle\Twig\Extension\TwigDeclensionExtension
      */
-    private function setCached(Declension $declension) {
+    private function setCached(Declension $declension)
+    {
         $this->cached[md5(mb_strtolower($declension->getInfinitive(), 'UTF-8'))] = $declension;
 
         return $this;
     }
     
     /**
-     * 
+     *
      * @param String $infinitive
      * @return \Bubnov\TwigDeclensionBundle\Twig\Extension\TwigDeclensionExtension
      */
-    private function setCachedNull($infinitive = '') {
+    private function setCachedNull($infinitive = '')
+    {
         $infinitive = mb_strtolower($infinitive, 'UTF-8');
         $this->cached[md5($infinitive)] = false;
         

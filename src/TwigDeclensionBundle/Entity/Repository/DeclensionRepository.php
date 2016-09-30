@@ -11,28 +11,30 @@ use Bubnov\TwigDeclensionBundle\Entity\Declension;
 class DeclensionRepository extends EntityRepository
 {
     /**
-     * @param array $formData
+     * @param array $data
      * @return QueryBuilder
      */
-    public function getListQB($formData = [])
+    public function getListQB($data = [])
     {
         $qb = $this->createQueryBuilder('d')
             ->select('d')
             ->orderBy('d.infinitive', 'ASC')
         ;
+
+        if (!is_array($data)) {
+            return $qb;
+        }
         
-        foreach($formData as $name => $value){
-            if(empty($value)){
+        foreach ($data as $name => $value) {
+            if (empty($value)) {
                 continue;
             }
-            if($name === 'needs_work'){
-                foreach(Declension::$forms as $form){
-                    if($form === 'plural'){
+            if ('needs_work' === $name) {
+                foreach (Declension::$forms as $form) {
+                    if ('plural' === $form) {
                         continue;
                     }
-                    $qb
-                        ->orWhere('d.' . $form . ' IS NULL')
-                    ;
+                    $qb->orWhere('d.' . $form . ' IS NULL');
                 }
                 continue;
             }
@@ -46,8 +48,9 @@ class DeclensionRepository extends EntityRepository
     }
     
     /**
-     * 
-     * @param type $infinitive
+     *
+     * @param string $infinitive
+     * @return Declension | null
      */
     public function findOneByInfinitive($infinitive = '')
     {

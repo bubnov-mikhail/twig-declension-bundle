@@ -29,7 +29,6 @@ class FilterDeclensionFormType extends AbstractType
                 'data' => false,
                 'required' => false,
             ])
-            ->setMethod('POST')
         ;
     }
 
@@ -38,9 +37,10 @@ class FilterDeclensionFormType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver)
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'csrf_protection'   => false,
-        ));
+            'method'            => 'POST',
+        ]);
     }
 
     /**

@@ -7,11 +7,13 @@
     "require": {
         "cijic/phpmorphy": "~0.3",
         "friendsofsymfony/jsrouting-bundle": "~2.0",
-        "jms/security-extra-bundle": "~1.6",
         "knplabs/knp-paginator-bundle": "2.*",
         "symfony/symfony": "~3.0",
-        "sensio/framework-extra-bundle": "^3.0.2"
+        "sensio/framework-extra-bundle": "~3.0",
+        "twig/twig": "~1.10"
     },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
     "autoload": {
         "psr-4": {
             "Bubnov\\TwigDeclensionBundle\\": "src/TwigDeclensionBundle"
@@ -25,7 +27,7 @@
     ],
     "extra": {
         "branch-alias": {
-            "dev-master": "3.0-dev"
+            "dev-master": "3.0.x-dev"
         }
     }
 }
