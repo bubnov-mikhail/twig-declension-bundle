@@ -237,16 +237,16 @@ class TwigDeclensionExtension extends \Twig_Extension
      */
     private function getCached($infinitive = '')
     {
-        $infinitive = mb_strtolower($infinitive, 'UTF-8');
-        if (isset($this->cached[md5($infinitive)])) {
-            return $this->cached[md5($infinitive)];
-        }
-
         if ($this->doPreCache) {
             $this->preCache();
             $this->doPreCache = false;
         }
         
+        $infinitive = mb_strtolower($infinitive, 'UTF-8');
+        if (isset($this->cached[md5($infinitive)])) {
+            return $this->cached[md5($infinitive)];
+        }
+
         return null;
     }
     
